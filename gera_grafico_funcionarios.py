@@ -13,24 +13,6 @@ from sqlalchemy import create_engine
 
 hoje = datetime.now()
 
-try:
-    conn = psycopg2.connect(
-        host="localhost",
-        database="forum",
-        user="postgres",
-        password="#abc123#"
-    )
-    cur = conn.cursor()
-    cur.execute("SELECT version();")
-    versao = cur.fetchone()
-    print(f"Versão do PostgreSQL: {versao}")
-
-except psycopg2.Error as e:
-    print(f"Erro ao conectar ao PostgreSQL: {e}")
-
-
-
-
 engine = create_engine('postgresql+psycopg2://postgres:#abc123#@localhost:5432/forum')
 query_funcionarios = "SELECT * FROM funcionarios;"
 query_tarefas = "SELECT * FROM tarefas"
@@ -41,9 +23,6 @@ df_funcionarios.to_excel('df_funcionarios.xlsx', index=False)
 
 df_tarefas = pd.read_sql(query_tarefas, engine)
 df_tarefas.to_excel('df_tarefas.xlsx', index=False)
-
-
-
 
 def cria_grafico(df_funcionarios):
     # Contagens necessárias para os gráficos
@@ -108,15 +87,12 @@ def cria_grafico(df_funcionarios):
     ax3.set_ylim(0, contagem_idade.max() + (contagem_idade.max() * 0.10))
     ax3.set_yticklabels([])
 
-
-
     for p in ax3.patches:
         height = p.get_height()
         ax3.text(x=p.get_x() + p.get_width() / 2,
                  y=height + 0.1,  # Posição ligeiramente acima da barra
                  s=f'{int(height)}',  # Valor da contagem
                  ha='center', color='black')  # Centralizar o texto
-
 
     #Gráfico 4 - Contagem Status
     ax4 = plt.subplot(gs[2, 0])
@@ -167,7 +143,6 @@ def cria_grafico(df_funcionarios):
     ax5.axis('equal')
     ax5.legend(legenda, loc='upper left', bbox_to_anchor=(0.8, 0.97), facecolor='white', edgecolor='lightgrey', fontsize=12, title_fontsize='13', shadow=True)
 
-
     # Ajusta o layout e salva o gráfico como uma imagem
     plt.tight_layout()
     plt.savefig('dashboard.png', facecolor=fig.get_facecolor())
@@ -203,9 +178,4 @@ cria_grafico(df_funcionarios)
 
 
 
-
-
-
-# Fechando a engine
-conn.close()
 engine.dispose()
