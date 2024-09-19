@@ -44,7 +44,7 @@ def fonte_negrito():
         text.set_fontsize(12)
         text.set_fontweight('bold')
 #Função para criar o dashboard
-def cria_dashboard(df_funcionarios):
+def gera_dashboard(df_funcionarios):
     #Criação da figura e layout
     fig = plt.figure(figsize=(20, 10), facecolor='black')
     #Definindo a grade 3x2
